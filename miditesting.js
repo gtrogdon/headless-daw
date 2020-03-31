@@ -1,32 +1,52 @@
-var midi, data;
-// request MIDI access
+//On successful access of MIDI device(s)
+onMIDISuccess = (midiAccess) => {
+    //Assign callbacks to midi device handlers
+    midiAccess.inputs.forEach((input) => {
+        console.log("Registered", input["manufacturer"], input["name"]);
+        input.onmidimessage = getMIDImessage;
+    })
+}
+
+//On failure to access MIDI devices.
+onMIDIFailure = () => {
+    console.log("Could not access your MIDI device.");
+}
+
+/*Parse midi message data.
+Command value of 144 signifies "note on"
+command value of 128 signifies "note off"
+Note values range from 0-127--lowest to highest. i.e. middle C is 60
+Velocity (volume) ranges from 0-127. Softest "note on" is 1.
+Finally, command value of 144 with a 0 velocity could be used to signify
+a note off rather than a 128 command.*/
+getMIDImessage = (midiMessage) => {
+    const command = midiMessage.data[0];
+    const note = midiMessage.data[1];
+    const velocity = (midiMessage.data.length > 2) ? midiMessage.data[2] : 0; 
+
+    (command==144) ? 
+        (velocity) ? noteOn(note, velocity) : 
+        noteOff(note, velocity) :
+        noteOff(note, velocity);
+}
+
+noteOn = (note, velocity) => {
+    console.log(note, velocity, "on");
+    return 0;
+}
+
+noteOff = (note, velocity) => {
+    console.log(note, velocity, "off");
+    return 0;
+}
+//Check if MIDI is supported in the browser
+//NOTE: Web MIDI is only available natively in ***Chrome, Opera, 
+//Android WebView***. I installed it for Firefox separately.
 if (navigator.requestMIDIAccess) {
-    navigator.requestMIDIAccess({
-        sysex: false
-    }).then(onMIDISuccess, onMIDIFailure);
+    console.log("Web MIDI supported!");
+//If supported by browser, then asynchronously request access.
+    navigator.requestMIDIAccess()
+        .then(onMIDISuccess, onMIDIFailure);
 } else {
-    alert("No MIDI support in your browser.");
-}
-
-// midi functions
-function onMIDISuccess(midiAccess) {
-    // when we get a succesful response, run this code
-    midi = midiAccess; // this is our raw MIDI data, inputs, outputs, and sysex status
-
-    var inputs = midi.inputs.values();
-    // loop over all available inputs and listen for any MIDI input
-    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
-        // each time there is a midi message call the onMIDIMessage function
-        input.value.onmidimessage = onMIDIMessage;
-    }
-}
-
-function onMIDIFailure(error) {
-    // when we get a failed response, run this code
-    console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
-}
-
-function onMIDIMessage(message) {
-    data = message.data; // this gives us our [command/channel, note, velocity] data.
-    console.log('MIDI data', data); // MIDI data [144, 63, 73]
+    console.log("Web Midi is not supported...");
 }
