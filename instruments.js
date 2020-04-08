@@ -1,33 +1,42 @@
+//Current instrument
 let curProg=0;
+//Current octave
 let curOct=0;
+//Current note
 let curNote=60;
+//Current midi device (I think)
 let curMidi=0;
 let midiPort=[];
 let currentPort=-1;
 
-function Init(){
-  //Initialize MIDI devices
-  InitMidi();
-  //Synthesizer element
-  synth=document.getElementById("tinysynth");
-  //keyboard element
-  kb=document.getElementById("kb");
-  //Add listener to keyboard to change notes properly
-  kb.addEventListener("change",KeyIn);
-  let sh=document.getElementById("shot");
-  synth.ready().then(()=>{
-    sh.addEventListener("mousedown",function(){
-        synth.send([0x90+curMidi,curNote,100],0);
-      });
-      sh.addEventListener("mouseup",function(){
-        synth.send([0x80+curMidi,curNote,100],0);
-      });
-      for(let i=0;i<128;++i){
-        let o=document.createElement("option");
-        o.innerHTML=(i+1)+" : "+synth.getTimbreName(0,i);
-        document.getElementById("prog").appendChild(o);
-      }
-      ProgChange(0);
+Init = () => {
+	//Initialize MIDI devices
+  	InitMidi();
+  	//Synthesizer element
+  	synth=document.getElementById("tinysynth");
+  	//keyboard element
+  	kb=document.getElementById("kb");
+  	//Add listener to keyboard to change notes properly
+  	kb.addEventListener("change",KeyIn);
+  	let sh=document.getElementById("shot");
+	/*When synth has loaded, add event listener that 
+	 *sends the current note to the audio output when
+	 *the button on the bottom left hand corner is clicked.*/
+  	synth.ready().then(() => {
+    	sh.addEventListener("mousedown", () => {
+        	synth.send([0x90+curMidi,curNote,100],0);
+      	});
+      	sh.addEventListener("mouseup", () => {
+        	synth.send([0x80+curMidi,curNote,100],0);
+      	});
+		/*Append each instrument to list in dropdown menu*/
+      	for(let i=0;i<128;++i){
+        	let o=document.createElement("option");
+        	o.innerHTML=(i+1)+" : "+synth.getTimbreName(0,i);
+        	document.getElementById("prog").appendChild(o);
+      	}
+		/*Default to instrument 0*/
+      	ProgChange(0);
   });
 }
 
@@ -45,15 +54,15 @@ function MidiIn(e){
   }
 }
 
+//Selects device through Midi Port array
 function SelectMidi(n){
 //  console.log("Select Port:"+n+":"+(n>=0?midiPort[n].name:"none"));
-console.log(midiPort);
   document.getElementById("midiport").selectedIndex=n+1;
   if(currentPort>=0)
     midiPort[currentPort].removeEventListener("midimessage",MidiIn);
-  currentPort=n;
+  	currentPort=n;
   if(currentPort>=0){
-    midiPort[currentPort].addEventListener("midimessage",MidiIn);
+    midiPort[currentPort].addEventListener("midimessage", MidiIn);
   }
 }
 
@@ -63,21 +72,24 @@ InitMidi = () => {
       (access) => {
         console.log("MIDI ready.");
         setTimeout(() => {
-          const it=access.inputs;
-
+		  //List of midi inputs
+	      const it=access.inputs;
+		  //Append midi input options to dropdown menu.
           it.forEach((input) => {
               let e=document.createElement("option");
-              e.innerHTML=input.value.name;
+              e.innerHTML=input.name;
               document.getElementById("midiport").appendChild(e);
-              midiPort.push(input.value);
+			  //Append input to midiPort array
+              midiPort.push(input);
           })
 
+		  //If there are any available midi inputs, select that.
           if(midiPort.length>0)
             SelectMidi(0);
         }, 10);
       },
-      function() {
-        alert("MIDI is not available.");
+      () => {
+          alert("MIDI is not available.");
       }
   );}
 };
@@ -98,7 +110,10 @@ function Ctrl(){
   }
 }
 
-function KeyIn(e){
+//When a key is pressed, figure out which sound should
+//be played. Set the "shot" button in the bottom left 
+//hand corner to the current note.
+KeyIn = (e) => {
   curNote=e.note[1]+curOct*12;
   document.getElementById("shot").innerHTML=curNote;
   if(e.note[0])
@@ -225,6 +240,7 @@ function ProgChange(p){
     if(curMidi!=9){
       curProg=p;
       let pg=synth.program[curProg];
+	  console.log(pg);
       ViewParam(pg);
     }
   }
