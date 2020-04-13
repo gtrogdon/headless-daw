@@ -1,3 +1,51 @@
+// let recordbutton = document.getElementById('record');
+// let stopbutton = document.getElementById('stop');
+// let audioElement = document.getElementById('audio');
+// let currentlyRecording = false;
+// let getUserMediaStream;
+
+
+//capture audio from the user's device using the built in method and the MediaStream recording API
+
+// recordbutton.addEventListener('click', function() {
+//   let options = { audio: true, video: false };
+//   if (currentlyRecording === false) {
+//   navigator.mediaDevices.getUserMedia(options)
+//   .then(stream => {
+//     currentlyRecording = true;
+//     audioElement.controls = false;
+//     getUserMediaStream = stream;
+//     let audioContext = new AudioContext();
+//     let source = audioContext.createMediaStreamSource(stream);
+//     var mediaRecorder = new MediaRecorder(source);
+//   mediaRecorder.start();
+//   console.log(mediaRecorder.state);
+//   console.log("recorder started");
+//   document.getElementById('record').style.background = "red";
+//   document.getElementById('record').style.color = "black";
+//   }
+//     )
+//       }})
+        
+
+// stopbutton.addEventListener('click', function() {
+//   mediaRecorder.stop();
+//   console.log(mediaRecorder.state);
+//   console.log("recorder stopped");
+//   document.getElementById('record').style.background = "";
+//   document.getElementById('record').style.color = "";
+// });
+
+// mediaRecorder.onstop = function(e) {
+//   currentlyRecording = false;
+//   let audioElementSource = window.URL.createObjectURL(blob);
+//   audioElement.src = audioElementSource;
+//   audioElement.controls = true;
+// }.catch(function(err) {
+//   console.log('The following error occurred: ' + err);
+// });
+
+
 var curProg=0;
 var curOct=0;
 var curNote=60;
