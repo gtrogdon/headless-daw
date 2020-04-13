@@ -1,3 +1,3 @@
-Project of Graham Trogdon, Shayan Dolikhani, and Austin McGee.
+Project by Shayan Dolikhani, Austin McGee, and Graham Trogdon
 
-Demo at ./instruments.html
+Demo located at ./instruments.html
