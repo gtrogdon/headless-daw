@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1" />
   <script src="https://unpkg.com/@webcomponents/custom-elements"></script>
   <script src='https://g200kg.github.io/webaudio-tinysynth/webaudio-tinysynth.js'></script>
   <script src="https://g200kg.github.io/webaudio-controls/webaudio-controls.js" ></script>
@@ -47,7 +48,7 @@ The demo on this page is based on webauido-tinysynth, and you can do the followi
 </table>
 <br/>
 <hr/>
-MIDI Keyboard : <select id="midiport" onchange="SelectMidi(this.selectedIndex-1)"><option>--</option></select>
+Select a MIDI Keyboard : <select id="midiport" onchange="SelectMidi(this.selectedIndex-1)"><option>--</option></select>
 <br/>
 Oct : <label><input type="radio" name="oct" onclick="OctChange(-2)"/> -2</label>
 <label><input type="radio" name="oct" onclick="OctChange(-1)"/> -1</label>
@@ -61,7 +62,13 @@ Ch : <select onchange="ChChange(this)"><option>Ch1</option><option>Ch2</option><
 Prog : <select id="prog" onchange="ProgChange(this.selectedIndex)">
 </select>
 <hr/>
+  
+Upload a voice recording (in progress) : <input type="file" accept="audio/*">
+<button onclick="playSound()" disabled>Start</button>
+<button onclick="stopSound()" disabled>Stop</button>
+<script src="./mic.js"></script>
 <br/>
+<hr/>  
 <button id="record">Record</button>
 <button id="stop">Stop</button>
 <button id="play">Play</button>
