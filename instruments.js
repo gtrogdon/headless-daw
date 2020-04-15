@@ -62,7 +62,7 @@ Init = () => {
   	//keyboard element
   	kb=document.getElementById("kb");
   	//Add listener to keyboard to change notes properly
-  	kb.addEventListener("change",KeyIn);
+  	kb.addEventListener("change", KeyIn);
   	let sh=document.getElementById("shot");
 	/*When synth has loaded, add event listener that 
 	 *sends the current note to the audio output when
@@ -85,156 +85,10 @@ Init = () => {
   });
 }
 
-//Parse MIDI keyboard inputs and 
-//play appropriate note based on keyboard
-//key pressed.
-function MidiIn(e){
-  if(synth){
-    switch(e.data[0]&0xf0){
-    case 0x90:
-      kb.setNote(e.data[2]?1:0,e.data[1]);
-      break;
-    case 0x80:
-      kb.setNote(0,e.data[1]);
-    }
-    e.data[1]=e.data[1]+curOct*12;
-    synth.send(e.data,0);
-  }
-}
-
-//Selects device through Midi Port array
-function SelectMidi(n){
-//  console.log("Select Port:"+n+":"+(n>=0?midiPort[n].name:"none"));
-  document.getElementById("midiport").selectedIndex=n+1;
-  if(currentPort>=0)
-    midiPort[currentPort].removeEventListener("midimessage",MidiIn);
-  	currentPort=n;
-  if(currentPort>=0){
-	//Run MidiIn function whenever a key is pressed on Midi Keyboard.
-    midiPort[currentPort].addEventListener("midimessage", MidiIn);
-  }
-}
-
-InitMidi = () => {
-  if (navigator.requestMIDIAccess) {
-    navigator.requestMIDIAccess().then(
-      (access) => {
-        console.log("MIDI ready.");
-        setTimeout(() => {
-		  //List of midi inputs
-	      const it=access.inputs;
-		  //Append midi input options to dropdown menu.
-          it.forEach((input) => {
-              let e=document.createElement("option");
-              e.innerHTML=input.name;
-              document.getElementById("midiport").appendChild(e);
-			  //Append input to midiPort array
-              midiPort.push(input);
-          })
-
-		  //If there are any available midi inputs, select that. Default to first one.
-          if(midiPort.length>0)
-            SelectMidi(0);
-        }, 10);
-      },
-      () => {
-          alert("MIDI is not available.");
-      }
-  );}
-};
-
-//Load midi files from the browser.
-function loadMidi(files){
-  let reader = new FileReader();
-  reader.onload=function(e){
-    synth.loadMIDI(reader.result);
-  }
-  reader.readAsArrayBuffer(files[0]);
-}
-
-
-//When a key is pressed, figure out which sound should
-//be played. Set the "shot" button in the bottom left 
-//hand corner to the current note.
-KeyIn = (e) => {
-  curNote=e.note[1]+curOct*12;
-  document.getElementById("shot").innerHTML=curNote;
-  if(e.note[0])
-    synth.send([0x90+curMidi,curNote,100]);
-  else
-    synth.send([0x80+curMidi,curNote,0]);
-  if(curMidi==9){
-    let w=synth.drummap[curNote-35];
-    //ViewParam(w);
-  }
-}
-
 //Change MIDI channel
 function ChChange(e){
   curMidi=e.selectedIndex;
 }
-
-function ViewDef(pg){
-  let s=JSON.stringify(pg.p);
-  s=s.replace(/}/g,",}").replace(/\"([a-z])\"/g,"$1");
-  let ss=["g:0,","t:1,","f:0,","v:0.5,","a:0,","h:0.01,","d:0.01,","s:0,","r:0.05,","p:1,","q:1","k:0"];
-  for(p=0;p<ss.length;++p){
-    s=s.replace(ss[p],",");
-    s=s.replace(ss[p],",");
-    s=s.replace(ss[p],",");
-  }
-  s=s.replace(/{,/g,"{");
-  s=s.replace(/,+/g,",");
-  document.getElementById("patch").value=s;
-}
-
-function EnableRow(){
-  oscs=document.getElementById("oscs").selectedIndex+1;
-  for(let i=2;;++i){
-    let o=document.getElementById("osc"+i)
-    if(!o)
-      break;
-    ids=["g","w","v","t","f","a","h","d","s","r","p","q","k"];
-    for(id=0;id<ids.length;++id){
-      document.getElementById(ids[id]+i).disabled=(oscs>=i)?false:true;
-      document.getElementById(ids[id]+i).style.background=(oscs>=i)?"#fff":"#ccc";
-    }
-  }
-}
-
-function Edit(){
-  if(window.synth==undefined)
-    return;
-  let prog;
-  if(curMidi==9)
-    prog=synth.drummap[curNote-35];
-  else
-    prog=synth.program[curProg];
-  let oscs=document.getElementById("oscs").selectedIndex+1;
-  EnableRow();
-  if(prog.p.length>oscs)
-    prog.p.length=oscs;
-  if(prog.p.length<oscs)
-    for(let i=oscs-prog.p.length;i>=0;--i)
-      prog.p.push({g:0,w:"sine",v:0,t:0,f:0,a:0,h:0,d:1,s:0,r:1,b:0,c:0,p:1,q:1,k:0});
-  for(let i=0;i<oscs;++i){
-    prog.p[i].g=GetVal("g"+(i+1));
-    prog.p[i].w=document.getElementById("w"+(i+1)).value;
-    prog.p[i].v=GetVal("v"+(i+1));
-    prog.p[i].t=GetVal("t"+(i+1));
-    prog.p[i].f=GetVal("f"+(i+1));
-    prog.p[i].a=GetVal("a"+(i+1));
-    prog.p[i].h=GetVal("h"+(i+1));
-    prog.p[i].d=GetVal("d"+(i+1));
-    prog.p[i].s=GetVal("s"+(i+1));
-    prog.p[i].r=GetVal("r"+(i+1));
-    prog.p[i].p=GetVal("p"+(i+1));
-    prog.p[i].q=GetVal("q"+(i+1));
-    prog.p[i].k=GetVal("k"+(i+1));
-  }
-  ViewDef(prog);
-}
-
 
 //Changes the octave, unsurprisingly.
 function OctChange(o){
@@ -253,79 +107,119 @@ function ProgChange(p){
   }
 }
 
-function SetQuality(n){
-  let pg;
-  synth.quality=n;
-  if(curMidi==9)
-    pg=synth.drummap[curNote];
-  else
-    pg=synth.program[curProg];
-  ViewParam(pg);
-}
-
-function GetVal(id){
-  let s=+document.getElementById(id).value;
-  if(isNaN(s))
-    s=0;
-  return s;
-}
-
-function OpenEditor(){
-  let e=document.getElementById("soundeditor");
-  if(e.style.display=="block")
-    e.style.display="none";
-  else
-    e.style.display="block";
-}
-
 function Sustain(b){
   synth.send([0xb0+curMidi,64,b?127:0],0);
 }
 
-function About(){
-  let el=document.getElementById("aboutcontents");
-  console.log(el.style.height)
-  if(el.style.height==""||el.style.height=="0px"){
-    el.style.height="400px";
-    el.style.padding="20px 20px";
-  }
-  else{
-    el.style.height="0px";
-    el.style.padding="0px 20px";
-  }
-}
-
+//Run on page load
 window.onload=()=>{
+  
   //Initialize MIDI and tinysynth.
   Init();
-  //Add keydown event handler to enable and disable
-  //the sustain.
-  document.addEventListener("keydown", (e) => {
-    if(e.keyCode==16){
-      document.getElementById("sus").checked=true;
-      Sustain(true);
-    }
-  });
-  document.addEventListener("keyup", (e) => {
-    if(e.keyCode==16){
-      document.getElementById("sus").checked=false;
-      Sustain(false);
-    }
-  })
-  document.addEventListener("keydown", (e) => {
-	  if (e.key == "!") {
-		  e.preventDefault();
-		  const octs = [-1, -2, 0, 1, 2];
-		  curOct=octs[(octs.indexOf(curOct)+1)%octs.length];
-	  }
-  })
+  //Assign keybindings for program
+  BindKeys();
+
 }
 
+//function ViewDef(pg){
+//  let s=JSON.stringify(pg.p);
+//  s=s.replace(/}/g,",}").replace(/\"([a-z])\"/g,"$1");
+//  let ss=["g:0,","t:1,","f:0,","v:0.5,","a:0,","h:0.01,","d:0.01,","s:0,","r:0.05,","p:1,","q:1","k:0"];
+//  for(p=0;p<ss.length;++p){
+//    s=s.replace(ss[p],",");
+//    s=s.replace(ss[p],",");
+//    s=s.replace(ss[p],",");
+//  }
+//  s=s.replace(/{,/g,"{");
+//  s=s.replace(/,+/g,",");
+//  document.getElementById("patch").value=s;
+//}
+//function About(){
+//  let el=document.getElementById("aboutcontents");
+//  console.log(el.style.height)
+//  if(el.style.height==""||el.style.height=="0px"){
+//    el.style.height="400px";
+//    el.style.padding="20px 20px";
+//  }
+//  else{
+//    el.style.height="0px";
+//    el.style.padding="0px 20px";
+//  }
+//}
+
+//function SetQuality(n){
+//  let pg;
+//  synth.quality=n;
+//  if(curMidi==9)
+//    pg=synth.drummap[curNote];
+//  else
+//    pg=synth.program[curProg];
+//  ViewParam(pg);
+//}
+//
+//function GetVal(id){
+//  let s=+document.getElementById(id).value;
+//  if(isNaN(s))
+//    s=0;
+//  return s;
+//}
+//function Edit(){
+//  if(window.synth==undefined)
+//    return;
+//  let prog;
+//  if(curMidi==9)
+//    prog=synth.drummap[curNote-35];
+//  else
+//    prog=synth.program[curProg];
+//  let oscs=document.getElementById("oscs").selectedIndex+1;
+//  EnableRow();
+//  if(prog.p.length>oscs)
+//    prog.p.length=oscs;
+//  if(prog.p.length<oscs)
+//    for(let i=oscs-prog.p.length;i>=0;--i)
+//      prog.p.push({g:0,w:"sine",v:0,t:0,f:0,a:0,h:0,d:1,s:0,r:1,b:0,c:0,p:1,q:1,k:0});
+//  for(let i=0;i<oscs;++i){
+//    prog.p[i].g=GetVal("g"+(i+1));
+//    prog.p[i].w=document.getElementById("w"+(i+1)).value;
+//    prog.p[i].v=GetVal("v"+(i+1));
+//    prog.p[i].t=GetVal("t"+(i+1));
+//    prog.p[i].f=GetVal("f"+(i+1));
+//    prog.p[i].a=GetVal("a"+(i+1));
+//    prog.p[i].h=GetVal("h"+(i+1));
+//    prog.p[i].d=GetVal("d"+(i+1));
+//    prog.p[i].s=GetVal("s"+(i+1));
+//    prog.p[i].r=GetVal("r"+(i+1));
+//    prog.p[i].p=GetVal("p"+(i+1));
+//    prog.p[i].q=GetVal("q"+(i+1));
+//    prog.p[i].k=GetVal("k"+(i+1));
+//  }
+//  ViewDef(prog);
+//}
+//function OpenEditor(){
+//  let e=document.getElementById("soundeditor");
+//  if(e.style.display=="block")
+//    e.style.display="none";
+//  else
+//    e.style.display="block";
+//}
 //function Ctrl(){
 //  if(typeof(synth)!="undefined"){
 //    synth.masterVol=document.getElementById("vol").value;
 //    synth.reverbLev=document.getElementById("rev").value;
 //    synth.loop=document.getElementById("loop").value;
+//  }
+//}
+//function EnableRow(){
+//  oscs=document.getElementById("oscs").selectedIndex+1;
+//  for(let i=2;;++i){
+//    let o=document.getElementById("osc"+i)
+//    if(!o)
+//      break;
+//    ids=["g","w","v","t","f","a","h","d","s","r","p","q","k"];
+//    for(id=0;id<ids.length;++id){
+//      document.getElementById(ids[id]+i).disabled=(oscs>=i)?false:true;
+//      document.getElementById(ids[id]+i).style.background=(oscs>=i)?"#fff":"#ccc";
+//    }
 //  }
 //}
 
