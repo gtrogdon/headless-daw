@@ -63,9 +63,19 @@ Prog : <select id="prog" onchange="ProgChange(this.selectedIndex)">
 </select>
 <hr/>
   
-Upload a voice recording (in progress) : <input type="file" accept="audio/*">
-<button onclick="playSound()" disabled>Start</button>
-<button onclick="stopSound()" disabled>Stop</button>
+Upload a voice recording! (in progress) : 
+<section class="main-controls">
+  <canvas class="visualizer" height="30px"></canvas>
+  <div id="buttons">
+    <button class="record">Record</button>
+    <button class="stop">Stop</button>
+  </div>
+</section>
+
+<section class="sound-clips">
+</section>
+</div>
+<!--Web dictaphone is built using <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia">getUserMedia</a> and the <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder_API">MediaRecorder API</a>, which provides an easier way to capture Media streams.</p> -->
 <script src="./mic.js"></script>
 <br/>
 <hr/>  
