@@ -1,3 +1,7 @@
+/* Controls MIDI initialization and
+ * key interpretation functions.
+ * */
+
 InitMidi = () => {
   if (navigator.requestMIDIAccess) {
     navigator.requestMIDIAccess().then(

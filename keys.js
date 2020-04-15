@@ -1,3 +1,7 @@
+/* Controls keyboard input interpretation
+ * as well as implements and sets the keybindings
+ * that control the program */
+
 //When a key is pressed, figure out which sound should
 //be played. Set the "shot" button in the bottom left 
 //hand corner to the current note.
