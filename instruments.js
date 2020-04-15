@@ -40,6 +40,9 @@ Init = () => {
   });
 }
 
+//Parse MIDI keyboard inputs and 
+//play appropriate note based on keyboard
+//key pressed.
 function MidiIn(e){
   if(synth){
     switch(e.data[0]&0xf0){
@@ -62,6 +65,7 @@ function SelectMidi(n){
     midiPort[currentPort].removeEventListener("midimessage",MidiIn);
   	currentPort=n;
   if(currentPort>=0){
+	//Run MidiIn function whenever a key is pressed on Midi Keyboard.
     midiPort[currentPort].addEventListener("midimessage", MidiIn);
   }
 }
@@ -83,7 +87,7 @@ InitMidi = () => {
               midiPort.push(input);
           })
 
-		  //If there are any available midi inputs, select that.
+		  //If there are any available midi inputs, select that. Default to first one.
           if(midiPort.length>0)
             SelectMidi(0);
         }, 10);
@@ -94,6 +98,7 @@ InitMidi = () => {
   );}
 };
 
+//Load midi files from the browser.
 function loadMidi(files){
   let reader = new FileReader();
   reader.onload=function(e){
@@ -102,13 +107,6 @@ function loadMidi(files){
   reader.readAsArrayBuffer(files[0]);
 }
 
-function Ctrl(){
-  if(typeof(synth)!="undefined"){
-    synth.masterVol=document.getElementById("vol").value;
-    synth.reverbLev=document.getElementById("rev").value;
-    synth.loop=document.getElementById("loop").value;
-  }
-}
 
 //When a key is pressed, figure out which sound should
 //be played. Set the "shot" button in the bottom left 
@@ -122,10 +120,11 @@ KeyIn = (e) => {
     synth.send([0x80+curMidi,curNote,0]);
   if(curMidi==9){
     let w=synth.drummap[curNote-35];
-    ViewParam(w);
+    //ViewParam(w);
   }
 }
 
+//Change MIDI channel
 function ChChange(e){
   curMidi=e.selectedIndex;
 }
@@ -191,45 +190,8 @@ function Edit(){
   ViewDef(prog);
 }
 
-function ViewParam(pg){
-  if(!pg)
-    return;
-  let oscs=pg.p.length;
-  document.getElementById("oscs").selectedIndex=oscs-1;
-  let o=document.getElementById("osc2").firstChild;
-  while(o=o.nextSibling){
-    if(o.firstChild)
-      o.firstChild.disabled=(oscs>=2)?false:true;
-  }
-  o=document.getElementById("osc3").firstChild;
-  while(o=o.nextSibling){
-    if(o.firstChild)
-      o.firstChild.disabled=(oscs>=3)?false:true;
-  }
-  o=document.getElementById("osc4").firstChild;
-  while(o=o.nextSibling){
-    if(o.firstChild)
-      o.firstChild.disabled=(oscs>=4)?false:true;
-  }
-  document.getElementById("name").innerHTML=pg.name+" : ";
-  for(let i=0;i<oscs;++i){
-    document.getElementById("g"+(i+1)).value=pg.p[i].g;
-    document.getElementById("w"+(i+1)).value=pg.p[i].w;
-    document.getElementById("v"+(i+1)).value=pg.p[i].v;
-    document.getElementById("t"+(i+1)).value=pg.p[i].t;
-    document.getElementById("f"+(i+1)).value=pg.p[i].f;
-    document.getElementById("a"+(i+1)).value=pg.p[i].a;
-    document.getElementById("h"+(i+1)).value=pg.p[i].h;
-    document.getElementById("d"+(i+1)).value=pg.p[i].d;
-    document.getElementById("s"+(i+1)).value=pg.p[i].s;
-    document.getElementById("r"+(i+1)).value=pg.p[i].r;
-    document.getElementById("p"+(i+1)).value=pg.p[i].p;
-    document.getElementById("q"+(i+1)).value=pg.p[i].q;
-    document.getElementById("k"+(i+1)).value=pg.p[i].k;
-  }
-  ViewDef(pg);
-}
 
+//Changes the octave, unsurprisingly.
 function OctChange(o){
   curOct=o;
 }
@@ -241,7 +203,7 @@ function ProgChange(p){
       curProg=p;
       let pg=synth.program[curProg];
 	  console.log(pg);
-      ViewParam(pg);
+      //ViewParam(pg);
     }
   }
 }
@@ -289,17 +251,74 @@ function About(){
 }
 
 window.onload=()=>{
+  //Initialize MIDI and tinysynth.
   Init();
-  document.addEventListener("keydown",function(e){
+  //Add keydown event handler to enable and disable
+  //the sustain.
+  document.addEventListener("keydown", (e) => {
     if(e.keyCode==16){
       document.getElementById("sus").checked=true;
       Sustain(true);
     }
   });
-  document.addEventListener("keyup",function(e){
+  document.addEventListener("keyup", (e) => {
     if(e.keyCode==16){
       document.getElementById("sus").checked=false;
       Sustain(false);
     }
   })
+  document.addEventListener("keydown", (e) => {
+	  if (e.key == "!") {
+		  e.preventDefault();
+		  const octs = [-1, -2, 0, 1, 2];
+		  curOct=octs[(octs.indexOf(curOct)+1)%octs.length];
+	  }
+  })
 }
+
+//function Ctrl(){
+//  if(typeof(synth)!="undefined"){
+//    synth.masterVol=document.getElementById("vol").value;
+//    synth.reverbLev=document.getElementById("rev").value;
+//    synth.loop=document.getElementById("loop").value;
+//  }
+//}
+
+//function ViewParam(pg){
+//  if(!pg)
+//    return;
+//  let oscs=pg.p.length;
+//  document.getElementById("oscs").selectedIndex=oscs-1;
+//  let o=document.getElementById("osc2").firstChild;
+//  while(o=o.nextSibling){
+//    if(o.firstChild)
+//      o.firstChild.disabled=(oscs>=2)?false:true;
+//  }
+//  o=document.getElementById("osc3").firstChild;
+//  while(o=o.nextSibling){
+//    if(o.firstChild)
+//      o.firstChild.disabled=(oscs>=3)?false:true;
+//  }
+//  o=document.getElementById("osc4").firstChild;
+//  while(o=o.nextSibling){
+//    if(o.firstChild)
+//      o.firstChild.disabled=(oscs>=4)?false:true;
+//  }
+//  document.getElementById("name").innerHTML=pg.name+" : ";
+//  for(let i=0;i<oscs;++i){
+//    document.getElementById("g"+(i+1)).value=pg.p[i].g;
+//    document.getElementById("w"+(i+1)).value=pg.p[i].w;
+//    document.getElementById("v"+(i+1)).value=pg.p[i].v;
+//    document.getElementById("t"+(i+1)).value=pg.p[i].t;
+//    document.getElementById("f"+(i+1)).value=pg.p[i].f;
+//    document.getElementById("a"+(i+1)).value=pg.p[i].a;
+//    document.getElementById("h"+(i+1)).value=pg.p[i].h;
+//    document.getElementById("d"+(i+1)).value=pg.p[i].d;
+//    document.getElementById("s"+(i+1)).value=pg.p[i].s;
+//    document.getElementById("r"+(i+1)).value=pg.p[i].r;
+//    document.getElementById("p"+(i+1)).value=pg.p[i].p;
+//    document.getElementById("q"+(i+1)).value=pg.p[i].q;
+//    document.getElementById("k"+(i+1)).value=pg.p[i].k;
+//  }
+//  ViewDef(pg);
+//}
