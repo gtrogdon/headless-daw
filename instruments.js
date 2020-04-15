@@ -1,10 +1,8 @@
-<<<<<<< HEAD
 // let recordbutton = document.getElementById('record');
 // let stopbutton = document.getElementById('stop');
 // let audioElement = document.getElementById('audio');
 // let currentlyRecording = false;
 // let getUserMediaStream;
-
 
 //capture audio from the user's device using the built in method and the MediaStream recording API
 
@@ -28,7 +26,6 @@
 //     )
 //       }})
         
-
 // stopbutton.addEventListener('click', function() {
 //   mediaRecorder.stop();
 //   console.log(mediaRecorder.state);
