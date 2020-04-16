@@ -53,6 +53,7 @@ let curNote=60;
 let curMidi=0;
 let midiPort=[];
 let currentPort=-1;
+let voiceIndex=0;
 
 Init = () => {
 	//Initialize MIDI devices
@@ -114,6 +115,8 @@ function Sustain(b){
 //Run on page load
 window.onload=()=>{
   
+  //initialize TTS engine and voices
+  initSpeech();
   //Initialize MIDI and tinysynth.
   Init();
   //Assign keybindings for program

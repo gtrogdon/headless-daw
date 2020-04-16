@@ -7,7 +7,7 @@ setSpeech = () => {
 		let id;
 		id = setInterval(() => {
 			if(window.speechSynthesis.getVoices().length !== 0) {
-				resolve(synth.getVoices());
+				resolve(window.speechSynthesis.getVoices());
 				clearInterval(id);
 			}
 		});
@@ -26,5 +26,3 @@ utter = (outputText, voiceIndex) => {
 	window.speechSynthesis.speak(utterance);
 }
 
-initSpeech();
-utter("Hello, World!", 0);

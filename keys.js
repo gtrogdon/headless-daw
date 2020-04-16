@@ -28,6 +28,8 @@ const events = {
 		//Cycle through octaves on Shift+1
 		const octs = [-2, -1, 0, 1, 2];
 		curOct=octs[(octs.indexOf(curOct)+1)%octs.length];
+	}, "@":() => {
+		utter("Hello World", voiceIndex);
 	}
 }
 
