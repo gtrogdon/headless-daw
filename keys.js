@@ -29,6 +29,7 @@ const events = {
 		const octs = [-2, -1, 0, 1, 2];
 		curOct=octs[(octs.indexOf(curOct)+1)%octs.length];
 	}, "@":() => {
+		voiceIndex=(voiceIndex+1)%(window.speechSynthesis.getVoices().length);
 		utter("Hello World", voiceIndex);
 	}
 }
