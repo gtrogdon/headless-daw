@@ -6,7 +6,6 @@ InitMidi = () => {
   if (navigator.requestMIDIAccess) {
     navigator.requestMIDIAccess().then(
       (access) => {
-        console.log("MIDI ready.");
         setTimeout(() => {
 		  //List of midi inputs
 	      const it=access.inputs;
@@ -60,7 +59,23 @@ function MidiIn(e){
   }
 }
 
+//Create dialog box for midi files
+openMidiFile = () => {
+	let input = document.createElement('input');
+	input.type = "file";
 
+	input.onchange = e => {
+		const file = e.target.files[0];
+		if(file["type"] == "audio/midi") {
+			utter("Select a MIDI file.");
+			loadMidi([file]);
+		} else {
+			utter("Incorrect file type. Please select a MIDI file.");
+		}
+	}
+
+	input.click();
+}
 
 //Load midi files from the browser.
 function loadMidi(files){

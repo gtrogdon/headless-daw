@@ -25,7 +25,7 @@
 //   }
 //     )
 //       }})
-        
+
 // stopbutton.addEventListener('click', function() {
 //   mediaRecorder.stop();
 //   console.log(mediaRecorder.state);
@@ -57,71 +57,69 @@ let voiceIndex=0;
 
 Init = () => {
 	//Initialize MIDI devices
-  	InitMidi();
-  	//Synthesizer element
-  	synth=document.getElementById("tinysynth");
-  	//keyboard element
-  	kb=document.getElementById("kb");
-  	//Add listener to keyboard to change notes properly
-  	kb.addEventListener("change", KeyIn);
-  	let sh=document.getElementById("shot");
+	InitMidi();
+	//Synthesizer element
+	synth=document.getElementById("tinysynth");
+	//keyboard element
+	kb=document.getElementById("kb");
+	//Add listener to keyboard to change notes properly
+	kb.addEventListener("change", KeyIn);
+	let sh=document.getElementById("shot");
 	/*When synth has loaded, add event listener that 
 	 *sends the current note to the audio output when
 	 *the button on the bottom left hand corner is clicked.*/
-  	synth.ready().then(() => {
-    	sh.addEventListener("mousedown", () => {
-        	synth.send([0x90+curMidi,curNote,100],0);
-      	});
-      	sh.addEventListener("mouseup", () => {
-        	synth.send([0x80+curMidi,curNote,100],0);
-      	});
+	synth.ready().then(() => {
+		sh.addEventListener("mousedown", () => {
+			synth.send([0x90+curMidi,curNote,100],0);
+		});
+		sh.addEventListener("mouseup", () => {
+			synth.send([0x80+curMidi,curNote,100],0);
+		});
 		/*Append each instrument to list in dropdown menu*/
-      	for(let i=0;i<128;++i){
-        	let o=document.createElement("option");
-        	o.innerHTML=(i+1)+" : "+synth.getTimbreName(0,i);
-        	document.getElementById("prog").appendChild(o);
-      	}
+		for(let i=0;i<128;++i){
+			let o=document.createElement("option");
+			o.innerHTML=(i+1)+" : "+synth.getTimbreName(0,i);
+			document.getElementById("prog").appendChild(o);
+		}
 		/*Default to instrument 0*/
-      	ProgChange(0);
-  });
+		ProgChange(0);
+	});
 }
 
 //Change MIDI channel
 function ChChange(e){
-  curMidi=e.selectedIndex;
+	curMidi=e.selectedIndex;
 }
 
 //Changes the octave, unsurprisingly.
 function OctChange(o){
-  curOct=o;
+	curOct=o;
 }
 
 function ProgChange(p){
-  if(synth){
-    synth.send([0xc0,p]);
-    if(curMidi!=9){
-      curProg=p;
-      let pg=synth.program[curProg];
-	  console.log(pg);
-      //ViewParam(pg);
-    }
-  }
+	if(synth){
+		synth.send([0xc0,p]);
+		if(curMidi!=9){
+			curProg=p;
+			let pg=synth.program[curProg];
+			//ViewParam(pg);
+		}
+	}
 }
 
 function Sustain(b){
-  synth.send([0xb0+curMidi,64,b?127:0],0);
+	synth.send([0xb0+curMidi,64,b?127:0],0);
 }
 
 //Run on page load
 window.onload=()=>{
-  
-  //initialize TTS engine and voices
-  initSpeech();
-  //Initialize MIDI and tinysynth.
-  Init();
-  //Assign keybindings for program
-  BindKeys();
 
+	//initialize TTS engine and voices
+	initSpeech();
+	//Initialize MIDI and tinysynth.
+	Init();
+	//Assign keybindings for program
+	BindKeys();
 }
 
 //function ViewDef(pg){
@@ -255,11 +253,11 @@ window.onload=()=>{
 //    document.getElementById("f"+(i+1)).value=pg.p[i].f;
 //    document.getElementById("a"+(i+1)).value=pg.p[i].a;
 //    document.getElementById("h"+(i+1)).value=pg.p[i].h;
-//    document.getElementById("d"+(i+1)).value=pg.p[i].d;
+	//    document.getElementById("d"+(i+1)).value=pg.p[i].d;
 //    document.getElementById("s"+(i+1)).value=pg.p[i].s;
 //    document.getElementById("r"+(i+1)).value=pg.p[i].r;
 //    document.getElementById("p"+(i+1)).value=pg.p[i].p;
-//    document.getElementById("q"+(i+1)).value=pg.p[i].q;
+	//    document.getElementById("q"+(i+1)).value=pg.p[i].q;
 //    document.getElementById("k"+(i+1)).value=pg.p[i].k;
 //  }
 //  ViewDef(pg);

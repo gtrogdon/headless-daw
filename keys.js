@@ -31,6 +31,8 @@ const events = {
 	}, "@":() => {
 		voiceIndex=(voiceIndex+1)%(window.speechSynthesis.getVoices().length);
 		utter("Hello World", voiceIndex);
+	}, "#":() => {
+		openMidiFile();
 	}
 }
 
