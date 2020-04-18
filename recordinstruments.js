@@ -4,14 +4,18 @@ const soundClips2 = document.querySelector('.sound-clips2');
 const mainSection2 = document.querySelector('.main-controls2');
 
 
-// tinysynth element is selected, and the audio outputted from it is fed to a media recorder
-// receiving input from the mediastream destination node
+// tinysynth element is selected, and the audio outputted from it is fed to a gain node
+// that then feeds sound to both a media recorder receiving input from 
+//the mediastream destination node and to the speakers
 let synth = document.querySelector('.tinysynth');
 let context = synth.getAudioContext();
+let speaker = context.destination;
+let gain = context.createGain();
+synth.setAudioContext(context, gain);
 let dest = context.createMediaStreamDestination();
 let mediaRecorder2 = new MediaRecorder(dest.stream);
-synth.setAudioContext(context, dest);
-
+gain.connect(dest);
+gain.connect(speaker);
 
 
 // disable stop button while not recording
