@@ -53,8 +53,17 @@ let curNote=60;
 let curMidi=0;
 let midiPort=[];
 let currentPort=-1;
+//Index of tts voice used
 let voiceIndex=0;
+//Boolean to indicate if user is in
+//command monde.
 let inCommandMode=0;
+//Record of MIDI events
+let noteRecord=[];
+//Object of active notes
+let activeNotes={};
+let tracks = [];
+let curTrackIndex = 0;
 
 Init = () => {
 	//Initialize MIDI devices

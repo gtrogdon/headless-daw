@@ -85,3 +85,65 @@ function loadMidi(files){
   }
   reader.readAsArrayBuffer(files[0]);
 }
+
+//Add note to the record.
+addNote = (note) => {
+	noteRecord.push(MidiEvent.noteOn(note));
+	activeNotes[note] = Date.now();
+}
+
+//End note and calculate duration, adding that to the record.
+endNote = (note) => {
+	noteRecord.push(MidiEvent.noteOff(note, convertToTicks(activeNotes[note])))
+}
+
+//Convert start time of note to number of MIDI ticks the note was sustained.
+convertToTicks = (startTime) => {
+	return Math.floor((((Date.now()-startTime)/1000)/0.67)*128);
+}
+
+//Pull current contents of the record and create track.
+createTrack = () => {
+	tracks.push(new MidiTrack({ events:noteRecord }));
+	utter(`Track created. ${tracks.length} tracks total.`, voiceIndex);
+	noteRecord=[];
+	curTrackIndex+=1;
+}
+
+delTrack = (trackIndex) => {
+	utter(`Track ${curTrackIndex} deleted.`, voiceIndex)
+	if(trackIndex) {
+		curTrackIndex -= 1;
+		return tracks.filter((track) => {
+			return track != tracks[trackIndex];
+		});
+	} else {
+		tracks.pop();
+	}
+}
+
+clearNoteQueue = () => {
+	noteRecord = [];
+}
+
+changeTracks = (index) => {
+	curTrackIndex = index;
+}
+
+changeTrackUp = () => {
+	if(curTrackIndex < (tracks.length-1)) {
+		utter("Next Track");
+		curTrackIndex += 1;
+	} else {
+		utter("Last Track Already Reached.", voiceIndex);
+	}
+}
+
+changeTrackDown = () => {
+	if(curTrackIndex) {
+		utter("Previous Track");
+		curTrackIndex -= 1;
+	} else {
+		utter("First Track Already Reached.", voiceIndex)
+	}
+}

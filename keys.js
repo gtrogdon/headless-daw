@@ -9,10 +9,13 @@ KeyIn = (e) => {
 	if(!inCommandMode) {
 		curNote=e.note[1]+curOct*12;
 		document.getElementById("shot").innerHTML=curNote;
-		if(e.note[0])
+		if(e.note[0]) {
+			addNote(curNote);
 			synth.send([0x90+curMidi,curNote,100]);
-		else
+		} else {
+			endNote(curNote);
 			synth.send([0x80+curMidi,curNote,0]);
+		}
 		if(curMidi==9){
 			let w=synth.drummap[curNote-35];
 			//ViewParam(w);
@@ -63,6 +66,12 @@ const commandEvents = {
 			document.querySelector(".stop2").click();
 			inCommandMode=true;
 		}
+	}, "j":(e) => {
+		changeTrackUp();
+	}, "k":(e) => {
+		changeTrackDown();
+	}, "c":(e) => {
+		createTrack();
 	}
 }
 
