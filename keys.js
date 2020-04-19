@@ -20,7 +20,7 @@ KeyIn = (e) => {
 	}
 }
 
-//Define controls in an object for quicker access.
+//Keybindings for normal mode/music mode.
 const normalEvents = {
 	"Shift":(e) => {
 		//Sustain on Shift
@@ -41,17 +41,28 @@ const normalEvents = {
 	}
 }
 
+//Keybindings for command mode
 const commandEvents = {
 	";":(e) => {
 		utter("Music Mode", voiceIndex);
 		inCommandMode=false;
-	},
-	"v":(e) => {
+	}, "v":(e) => {
 		voiceIndex=(voiceIndex+1)%(window.speechSynthesis.getVoices().length);
 		utter("Changed voice", voiceIndex);
 	}, "o":(e) => {
 		utter("Open Midi File", voiceIndex);
 		openMidiFile();
+	}, "r":(e) => {
+		//Toggle instrument recording in command modr
+		if(document.querySelector(".stop2").disabled) {
+			utter("Begin Recording Instruments", voiceIndex);
+			document.querySelector(".record2").click();
+			inCommandMode=false;
+		} else {
+			utter("Stop Instrument Recording", voiceIndex);
+			document.querySelector(".stop2").click();
+			inCommandMode=true;
+		}
 	}
 }
 
