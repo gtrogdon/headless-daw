@@ -14,8 +14,8 @@ While it is more than possible to control the application through the mouse, eve
 <h3>Music Mode</h3>
 
 <h3>Command Mode</h3>
-<table>
-| Key | Usage |
-| ------------ | ------------ |
-| `;` | Switch to *Music Mode* |
-</table>
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
