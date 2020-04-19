@@ -6,32 +6,51 @@
 //be played. Set the "shot" button in the bottom left 
 //hand corner to the current note.
 KeyIn = (e) => {
-	curNote=e.note[1]+curOct*12;
-	document.getElementById("shot").innerHTML=curNote;
-	if(e.note[0])
-		synth.send([0x90+curMidi,curNote,100]);
-	else
-		synth.send([0x80+curMidi,curNote,0]);
-	if(curMidi==9){
-		let w=synth.drummap[curNote-35];
-		//ViewParam(w);
+	if(!inCommandMode) {
+		curNote=e.note[1]+curOct*12;
+		document.getElementById("shot").innerHTML=curNote;
+		if(e.note[0])
+			synth.send([0x90+curMidi,curNote,100]);
+		else
+			synth.send([0x80+curMidi,curNote,0]);
+		if(curMidi==9){
+			let w=synth.drummap[curNote-35];
+			//ViewParam(w);
+		}
 	}
 }
 
 //Define controls in an object for quicker access.
-const events = {
-	"Shift":() => {
+const normalEvents = {
+	"Shift":(e) => {
 		//Sustain on Shift
 		document.getElementById("sus").checked=true;
 		Sustain(true);
-	}, "!":() => {
-		//Cycle through octaves on Shift+1
+	}, ";":(e) => {
+		utter("Command Mode", voiceIndex);
+		inCommandMode=true;
+	}, "ArrowUp":(e) => {
+		e.preventDefault();
+		//Ascend octaves on up arrow in normal/music mode.
 		const octs = [-2, -1, 0, 1, 2];
 		curOct=octs[(octs.indexOf(curOct)+1)%octs.length];
-	}, "@":() => {
+	}, "ArrowDown":(e) => {
+		//Descend octaves on down arrow in normal/music mode.
+		const octs = [2, 1, 0, -1, -2];
+		curOct=octs[(octs.indexOf(curOct)+1)%octs.length];
+	}
+}
+
+const commandEvents = {
+	";":(e) => {
+		utter("Music Mode", voiceIndex);
+		inCommandMode=false;
+	},
+	"v":(e) => {
 		voiceIndex=(voiceIndex+1)%(window.speechSynthesis.getVoices().length);
-		utter("Hello World", voiceIndex);
-	}, "#":() => {
+		utter("Changed voice", voiceIndex);
+	}, "o":(e) => {
+		utter("Open Midi File", voiceIndex);
 		openMidiFile();
 	}
 }
@@ -40,7 +59,11 @@ const events = {
 BindKeys = () => {
 	//Keydown events
 	document.addEventListener("keydown", (e) => {
-		if(e.key in events) events[e.key]();
+		if(!inCommandMode) {
+			if(e.key in normalEvents) normalEvents[e.key](e);
+		} else {
+			if(e.key in commandEvents) commandEvents[e.key](e);
+		}
 	});
 	document.addEventListener("keyup", (e) => {
 		if(e.keyCode==16){

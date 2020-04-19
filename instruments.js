@@ -54,6 +54,7 @@ let curMidi=0;
 let midiPort=[];
 let currentPort=-1;
 let voiceIndex=0;
+let inCommandMode=0;
 
 Init = () => {
 	//Initialize MIDI devices
@@ -120,6 +121,8 @@ window.onload=()=>{
 	Init();
 	//Assign keybindings for program
 	BindKeys();
+
+	utter("Welcome to the Digital Audio Workstation", voiceIndex);
 }
 
 //function ViewDef(pg){
