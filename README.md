@@ -15,7 +15,7 @@ While it is more than possible to control the application through the mouse, eve
 
 <h3>Command Mode</h3>
 
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| Key		    | Usage		    		  |
+| ------------- | ------------- 		  |
+| `;`		    | Change to *Music Mode*  |
+| v			    | Cycle TTS voice  		  |
