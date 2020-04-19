@@ -18,4 +18,5 @@ While it is more than possible to control the application through the mouse, eve
 | Key		    | Usage		    		  |
 | ------------- | ------------- 		  |
 | `;`		    | Change to *Music Mode*  |
-| v			    | Cycle TTS voice  		  |
+| `v`			| Cycle TTS voice  		  |
+| `o`			| Import MIDI file  	  |
