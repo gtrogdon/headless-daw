@@ -18,7 +18,7 @@ keybindings is still being worked out, as can seen by
 some of the irregularities below.
 
 ![Music Mode Keybindings]
-(https://octodex.github.com/images/yaktocat.png)
+(https://github.com/silianBraille/headless-daw/blob/master/music_mode_guide.png)
 
 <h3>Command Mode</h3>
 
