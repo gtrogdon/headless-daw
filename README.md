@@ -19,6 +19,17 @@ some of the irregularities below.
 
 ![Music Mode Keybindings](https://github.com/silianBraille/headless-daw/blob/master/music_mode_guide.png)
 
+The following are the sparingly used commands in Music Mode
+that are most appropriate due to the immediate nature of the 
+action. It would be a problem if these were accessed in command mode.
+
+| Key		    | Usage		    		  				  	  |
+| ------------- | ------------- 		  				  	  |
+| `;`		    | Change to *Command Mode*  				  |
+| `Shift (hold)`| Sustain the note  		  				  |
+| `Up Arrow`	| Cycle up an octave  		  				  |
+| `Down Arrow`	| Cycle down an octave  		  			  |
+
 <h3>Command Mode</h3>
 
 | Key		    | Usage		    		  				  |
