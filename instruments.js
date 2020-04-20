@@ -64,6 +64,7 @@ let noteRecord=[];
 let activeNotes={};
 let tracks = [];
 let curTrackIndex = 0;
+let inRecordMode = false;
 
 Init = () => {
 	//Initialize MIDI devices

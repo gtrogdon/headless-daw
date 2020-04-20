@@ -147,3 +147,7 @@ changeTrackDown = () => {
 		utter("First Track Already Reached.", voiceIndex)
 	}
 }
+
+exportSong = () => {
+	MidiWriter({ tracks: tracks }).save();
+}

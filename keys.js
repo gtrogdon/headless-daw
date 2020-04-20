@@ -10,10 +10,10 @@ KeyIn = (e) => {
 		curNote=e.note[1]+curOct*12;
 		document.getElementById("shot").innerHTML=curNote;
 		if(e.note[0]) {
-			addNote(curNote);
+			if(inRecordMode) addNote(curNote);
 			synth.send([0x90+curMidi,curNote,100]);
 		} else {
-			endNote(curNote);
+			if(inRecordMode) endNote(curNote);
 			synth.send([0x80+curMidi,curNote,0]);
 		}
 		if(curMidi==9){
@@ -38,6 +38,7 @@ const normalEvents = {
 		const octs = [-2, -1, 0, 1, 2];
 		curOct=octs[(octs.indexOf(curOct)+1)%octs.length];
 	}, "ArrowDown":(e) => {
+		e.preventDefault();
 		//Descend octaves on down arrow in normal/music mode.
 		const octs = [2, 1, 0, -1, -2];
 		curOct=octs[(octs.indexOf(curOct)+1)%octs.length];
@@ -59,10 +60,12 @@ const commandEvents = {
 		//Toggle instrument recording in command modr
 		if(document.querySelector(".stop2").disabled) {
 			utter("Begin Recording Instruments", voiceIndex);
+			inRecordMode = true;
 			document.querySelector(".record2").click();
 			inCommandMode=false;
 		} else {
 			utter("Stop Instrument Recording", voiceIndex);
+			inRecordMode = false;
 			document.querySelector(".stop2").click();
 			inCommandMode=true;
 		}
@@ -72,6 +75,9 @@ const commandEvents = {
 		changeTrackDown();
 	}, "c":(e) => {
 		createTrack();
+	}, "x":(e) => {
+		utter("Exporting Song", voiceIndex);
+		exportSong();
 	}
 }
 
