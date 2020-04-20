@@ -17,8 +17,7 @@ keyboards is a work in progress--best design for these
 keybindings is still being worked out, as can seen by
 some of the irregularities below.
 
-![Music Mode Keybindings]
-(https://github.com/silianBraille/headless-daw/blob/master/music_mode_guide.png)
+![Music Mode Keybindings](https://github.com/silianBraille/headless-daw/blob/master/music_mode_guide.png)
 
 <h3>Command Mode</h3>
 
