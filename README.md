@@ -12,11 +12,21 @@ While it is more than possible to control the application through the mouse, eve
 
 <h2>Keyboard Shortcuts</h2>
 <h3>Music Mode</h3>
+Please note that the musical note keybindings for QWERTY
+keyboards is a work in progress--best design for these 
+keybindings is still being worked out, as can seen by
+some of the irregularities below.
+
+![Music Mode Keybindings]
+(https://octodex.github.com/images/yaktocat.png)
 
 <h3>Command Mode</h3>
 
-| Key		    | Usage		    		  |
-| ------------- | ------------- 		  |
-| `;`		    | Change to *Music Mode*  |
-| `v`			| Cycle TTS voice  		  |
-| `o`			| Import MIDI file  	  |
+| Key		    | Usage		    		  				  |
+| ------------- | ------------- 		  				  |
+| `;`		    | Change to *Music Mode*  				  |
+| `v`			| Cycle TTS voice  		  				  |
+| `o`			| Import MIDI file  	  				  |
+| `c`			| Create new track after recording  	  |
+| `j`			| Go down a track					  	  |
+| `k`			| Go up a track					 	 	  |

@@ -10,6 +10,9 @@ KeyIn = (e) => {
 		curNote=e.note[1]+curOct*12;
 		document.getElementById("shot").innerHTML=curNote;
 		if(e.note[0]) {
+			console.log(Object.entries(noteTable).find((pair) =>{
+				return pair[1]==curNote;
+			})[0]);
 			if(inRecordMode) addNote(curNote);
 			synth.send([0x90+curMidi,curNote,100]);
 		} else {
