@@ -56,6 +56,11 @@ td{
   padding:4px;
 }
 
+.td_align_right {
+  padding: 4px;
+  margin-left: 50px;
+}
+
 label{
   display:inline-block;
   background:#ddf;

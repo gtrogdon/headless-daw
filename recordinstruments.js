@@ -1,6 +1,6 @@
 const record2 = document.querySelector('.record2');
 const stop2 = document.querySelector('.stop2');
-const soundClips2 = document.querySelector('.sound-clips2');
+const soundClips2 = document.querySelector('#track_list');
 const mainSection2 = document.querySelector('.main-controls2');
 
 
@@ -76,10 +76,17 @@ if (navigator.mediaDevices.getUserMedia) {
         clipLabel2.textContent = clipName2;
       }
 
-      clipContainer2.appendChild(audio2);
-      clipContainer2.appendChild(clipLabel2);
-      clipContainer2.appendChild(deleteButton2);
-      soundClips2.appendChild(clipContainer2);
+	  let clipRow = document.createElement("tr");
+
+	  [audio2, clipLabel2, deleteButton2].forEach((item, i) => {
+		  let table_data = document.createElement("td");
+		  if(i) table_data.classList.add("td_align_right");
+		  table_data.appendChild(item);
+	  	  clipRow.appendChild(table_data);
+	  });
+
+	  soundClips2.appendChild(clipRow);
+      //clipRow.appendChild(clipContainer2);
 
       audio2.controls = true;
       const blob2 = new Blob(chunks2, { 'type' : 'audio/ogg; codecs=opus' });
