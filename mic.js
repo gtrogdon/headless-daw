@@ -5,6 +5,16 @@ const soundClips = document.querySelector('.sound-clips');
 const canvas = document.querySelector('.visualizer');
 const mainSection = document.querySelector('.main-controls');
 
+
+let synth = document.querySelector('.tinysynth');
+let context = synth.getAudioContext();
+let speaker = context.destination;
+let gain = context.createGain();
+synth.setAudioContext(context, gain);
+let dest = context.createMediaStreamDestination();
+gain.connect(dest);
+gain.connect(speaker);
+
 // disable stop button while not recording
 
 stop.disabled = true;
@@ -23,7 +33,8 @@ if (navigator.mediaDevices.getUserMedia) {
   let chunks = [];
 
   let onSuccess = function(stream) {
-    const mediaRecorder = new MediaRecorder(stream);
+    const audioMixer = new MultiStreamsMixer([stream, dest.stream]);
+    const mediaRecorder = new MediaRecorder(audioMixer.getMixedStream());
 
     visualize(stream);
 
