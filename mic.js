@@ -34,9 +34,10 @@ if (navigator.mediaDevices.getUserMedia) {
 
   let onSuccess = function(stream) {
     const audioMixer = new MultiStreamsMixer([stream, dest.stream]);
-    const mediaRecorder = new MediaRecorder(audioMixer.getMixedStream());
+    let mixedstream = audioMixer.getMixedStream();
+    const mediaRecorder = new MediaRecorder(mixedstream);
 
-    visualize(stream);
+    visualize(mixedstream);
 
     record.onclick = function() {
       mediaRecorder.start();
@@ -60,7 +61,7 @@ if (navigator.mediaDevices.getUserMedia) {
       record.disabled = false;
     }
 
-    mediaRecorder.onstop = function(e) {
+    mediaRecorder.onstop = function() {
       console.log("data available after MediaRecorder.stop() called.");
 
       const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
