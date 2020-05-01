@@ -10,9 +10,6 @@ KeyIn = (e) => {
 		curNote=e.note[1]+curOct*12;
 		document.getElementById("shot").innerHTML=curNote;
 		if(e.note[0]) {
-			console.log(Object.entries(noteTable).find((pair) =>{
-				return pair[1]==curNote;
-			})[0]);
 			if(inRecordMode) addNote(curNote);
 			synth.send([0x90+curMidi,curNote,100]);
 		} else {
@@ -54,8 +51,11 @@ const commandEvents = {
 		utter("Music Mode", voiceIndex);
 		inCommandMode=false;
 	}, "v":(e) => {
-		voiceIndex=(voiceIndex+1)%(window.speechSynthesis.getVoices().length);
-		utter("Changed voice", voiceIndex);
+		if(enableVoiceChange) {
+			voiceIndex=(voiceIndex+1)%(window.speechSynthesis.getVoices().length);
+			utter("Changed voice", voiceIndex);
+			enableVoiceChange = false;
+		}
 	}, "o":(e) => {
 		utter("Open Midi File", voiceIndex);
 		openMidiFile();
@@ -69,6 +69,7 @@ const commandEvents = {
 		} else {
 			utter("Stop Instrument Recording", voiceIndex);
 			inRecordMode = false;
+			createTrack();
 			document.querySelector(".stop2").click();
 			inCommandMode=true;
 		}
@@ -76,9 +77,7 @@ const commandEvents = {
 		changeTrackUp();
 	}, "k":(e) => {
 		changeTrackDown();
-	}, "c":(e) => {
-		createTrack();
-	}, "x":(e) => {
+	},  "x":(e) => {
 		utter("Exporting Song", voiceIndex);
 		exportSong();
 	}
@@ -98,6 +97,9 @@ BindKeys = () => {
 		if(e.keyCode==16){
 			document.getElementById("sus").checked=false;
 			Sustain(false);
+		} else if (e.key == "v") {
+			if(inCommandMode) 
+				enableVoiceChange = true;
 		}
 	});
 }

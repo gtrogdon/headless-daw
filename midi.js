@@ -107,7 +107,7 @@ createTrack = () => {
 	tracks.push(new MidiTrack({ events:noteRecord }));
 	utter(`Track created. ${tracks.length} tracks total.`, voiceIndex);
 	noteRecord=[];
-	curTrackIndex+=1;
+	if (tracks.length-1) curTrackIndex+=1;
 }
 
 delTrack = (trackIndex) => {

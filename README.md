@@ -32,11 +32,11 @@ action. It would be a problem if these were accessed in command mode.
 
 <h3>Command Mode</h3>
 
-| Key		    | Usage		    		  				  |
-| ------------- | ------------- 		  				  |
-| `;`		    | Change to *Music Mode*  				  |
-| `v`			| Cycle TTS voice  		  				  |
-| `o`			| Import MIDI file  	  				  |
-| `c`			| Create new track after recording  	  |
-| `j`			| Go down a track					  	  |
-| `k`			| Go up a track					 	 	  |
+| Key		    | Usage		    		  				  						|
+| ------------- | ------------- 		  				  						|
+| `;`		    | Change to *Music Mode*  				  						|
+| `v`			| Cycle TTS voice  		  				  						|
+| `o`			| Import MIDI file  	  				  						|
+| `r`			| Begin recording track. Switches back to Music Mode for you.	|
+| `j`			| Go down a track					  	  						|
+| `k`			| Go up a track					 	 	  						|
