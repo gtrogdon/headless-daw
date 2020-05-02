@@ -33,6 +33,7 @@ if (navigator.mediaDevices.getUserMedia) {
   let chunks = [];
 
   let onSuccess = function(stream) {
+    //setting up recorder to record streams from both microphone and instruments
     const audioMixer = new MultiStreamsMixer([stream, dest.stream]);
     let mixedstream = audioMixer.getMixedStream();
     const mediaRecorder = new MediaRecorder(mixedstream);
