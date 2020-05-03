@@ -5,6 +5,16 @@ const soundClips = document.querySelector('.sound-clips');
 const canvas = document.querySelector('.visualizer');
 const mainSection = document.querySelector('.main-controls');
 
+
+let synth = document.querySelector('.tinysynth');
+let context = synth.getAudioContext();
+let speaker = context.destination;
+let gain = context.createGain();
+synth.setAudioContext(context, gain);
+let dest = context.createMediaStreamDestination();
+gain.connect(dest);
+gain.connect(speaker);
+
 // disable stop button while not recording
 
 stop.disabled = true;
@@ -23,9 +33,12 @@ if (navigator.mediaDevices.getUserMedia) {
   let chunks = [];
 
   let onSuccess = function(stream) {
-    const mediaRecorder = new MediaRecorder(stream);
+    //setting up recorder to record streams from both microphone and instruments
+    const audioMixer = new MultiStreamsMixer([stream, dest.stream]);
+    let mixedstream = audioMixer.getMixedStream();
+    const mediaRecorder = new MediaRecorder(mixedstream);
 
-    visualize(stream);
+    visualize(mixedstream);
 
     record.onclick = function() {
       mediaRecorder.start();
@@ -49,7 +62,7 @@ if (navigator.mediaDevices.getUserMedia) {
       record.disabled = false;
     }
 
-    mediaRecorder.onstop = function(e) {
+    mediaRecorder.onstop = function() {
       console.log("data available after MediaRecorder.stop() called.");
 
       const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');

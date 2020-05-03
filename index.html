@@ -18,6 +18,7 @@
   <!-- controls midi keyboard setup and inputs -->
   <script src="./midi.js"></script>
   <script src="./instruments.js"></script>
+  <script src="https://www.webrtc-experiment.com/MultiStreamsMixer.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Audiowide" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="./styles.css">
@@ -60,7 +61,8 @@ Prog : <select id="prog" onchange="ProgChange(this.selectedIndex)">
 </select>
 <hr/>
   
-Upload a voice recording! (in progress) : 
+Record your voice and instruments!
+ 
 <section class="main-controls">
   <canvas class="visualizer" height="30px"></canvas>
   <div id="buttons">
@@ -76,7 +78,7 @@ Upload a voice recording! (in progress) :
 <script src="./mic.js"></script>
 
 <br>
-Record instruments!
+<!-- Record instruments!
 <section class="main-controls2">
   <div id="buttons2">
     <button class="record2">Record</button>
@@ -85,7 +87,7 @@ Record instruments!
 </section>
 <section class="sound-clips2">
 </section>
-<script src = "./recordinstruments.js"></script>
+<script src = "./recordinstruments.js"></script> -->
 
 </div>
 <br/>
