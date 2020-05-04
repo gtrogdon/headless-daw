@@ -35,8 +35,12 @@ action. It would be a problem if these were accessed in command mode.
 | Key		    | Usage		    		  				  						|
 | ------------- | ------------- 		  				  						|
 | `;`		    | Change to *Music Mode*  				  						|
+| `f`		    | Refocus to keyboard in case focus is lost  				  	|
 | `v`			| Cycle TTS voice  		  				  						|
 | `o`			| Import MIDI file  	  				  						|
 | `r`			| Begin recording track. Switches back to Music Mode for you.	|
 | `j`			| Go down a track					  	  						|
 | `k`			| Go up a track					 	 	  						|
+| `d`			| Delete currently selected track					 	 	  	|
+| `m`			| Toggle mic usage during recording. Off by default.			|
+| `x`			| Export MIDI file of your tracks					 	 	  	|
