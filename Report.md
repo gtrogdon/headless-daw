@@ -25,9 +25,9 @@ The Headless DAW is intended for young, visually-impaired users who don't have a
 
 <h2>How to Build/Deploy</h2>
 -This digital audio workstation is completely browser-based.<br/>
--Firefox is required for users to take full advantage of the application.<br/>
+-The DAW works in Chrome and Firefox<br/>
 -The DAW can be accessed at http://silianbraille.github.io/headless-daw<br/>
--Please be sure to allow Firefox access to the microphone. A pop-up should appear when the page first loads.<br/>
+-Please be sure to allow your browser access to the microphone. A pop-up should appear when the page first loads.<br/>
 
 <h2>Problems Encountered/Future Work</h2>
 The creation of a simple browser-based DAW for the visually impaired wasn't easy. It was difficult to find an existing workstation that we could go off of, as there are a limited number of instantly accessible browser-based DAWs and most of them were too complex for our intended audience. We had to get creative by using the MediaStream Recorder API along with the WebAudio-Tinysynth synthesizer in order to create a more stripped down and simplified way of recording instruments that wasn't too reliant on input from the mouse and visual controls.<br/>
