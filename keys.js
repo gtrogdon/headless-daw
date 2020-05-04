@@ -82,6 +82,16 @@ const commandEvents = {
 			document.querySelector("#track_list").removeChild(document.querySelector("#track_list").children[curTrackIndex])
 			delTrack(curTrackIndex);
 		}
+	}, "h":(e) => {
+		if(curProg) {
+			ProgChange(curProg-1);
+			utter(`${synth.getTimbreName(0, curProg)}`, voiceIndex);
+		} else {
+			utter("No prior instruments", voiceIndex);
+		}
+	}, "l":(e) => {
+		ProgChange(curProg+1);
+		utter(`${synth.getTimbreName(0, curProg)}`, voiceIndex);
 	}, "x":(e) => {
 		utter("Exporting Song", voiceIndex);
 		exportSong();

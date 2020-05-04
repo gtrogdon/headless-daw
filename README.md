@@ -42,6 +42,8 @@ action. It would be a problem if these were accessed in command mode.
 | `r`			| Begin recording track. Switches back to Music Mode for you.	|
 | `j`			| Go down a track					  	  						|
 | `k`			| Go up a track					 	 	  						|
+| `h`			| Previous instrument					 	 	  				|
+| `l`			| Next instrument					 	 	  					|
 | `d`			| Delete currently selected track					 	 	  	|
 | `m`			| Toggle mic usage during recording. Off by default.			|
 | `x`			| Export MIDI file of your tracks					 	 	  	|
