@@ -99,9 +99,11 @@ const commandEvents = {
 		if(useMic) {
 			utter("Mic Recording Off", voiceIndex);
 			useMic = false;
+			reloadRecorder();
 		} else {
 			utter("Mic Recording On", voiceIndex);
 			useMic = true;
+			reloadRecorder();
 		}
 	}
 }
