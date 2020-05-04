@@ -98,7 +98,7 @@ if (navigator.mediaDevices.getUserMedia) {
 
       deleteButton.onclick = function(e) {
         let evtTgt = e.target;
-        evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+        evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
       }
 
       clipLabel.onclick = function() {
