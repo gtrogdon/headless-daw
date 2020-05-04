@@ -66,6 +66,7 @@ let tracks = [];
 let curTrackIndex = 0;
 let inRecordMode = false;
 let enableVoiceChange = true;
+let useMic = false;
 
 Init = () => {
 	//Initialize MIDI devices

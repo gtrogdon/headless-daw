@@ -61,16 +61,16 @@ const commandEvents = {
 		openMidiFile();
 	}, "r":(e) => {
 		//Toggle instrument recording in command modr
-		if(document.querySelector(".stop2").disabled) {
+		if(document.querySelector(".stop").disabled) {
 			utter("Begin Recording Instruments", voiceIndex);
 			inRecordMode = true;
-			document.querySelector(".record2").click();
+			document.querySelector(".record").click();
 			inCommandMode=false;
 		} else {
 			utter("Stop Instrument Recording", voiceIndex);
 			inRecordMode = false;
 			createTrack();
-			document.querySelector(".stop2").click();
+			document.querySelector(".stop").click();
 			inCommandMode=true;
 		}
 	}, "j":(e) => {
@@ -80,6 +80,14 @@ const commandEvents = {
 	},  "x":(e) => {
 		utter("Exporting Song", voiceIndex);
 		exportSong();
+	}, "m":(e) => {
+		if(useMic) {
+			utter("Mic Recording Off");
+			useMic = false;
+		} else {
+			utter("Mic Recording On");
+			useMic = true;
+		}
 	}
 }
 

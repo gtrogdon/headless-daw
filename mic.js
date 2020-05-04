@@ -1,10 +1,9 @@
 
 const record = document.querySelector('.record');
 const stop = document.querySelector('.stop');
-const soundClips = document.querySelector('.sound-clips');
+const soundClips = document.querySelector('#track_list');
 const canvas = document.querySelector('.visualizer');
 const mainSection = document.querySelector('.main-controls');
-
 
 let synth = document.querySelector('.tinysynth');
 let context = synth.getAudioContext();
@@ -34,11 +33,13 @@ if (navigator.mediaDevices.getUserMedia) {
 
   let onSuccess = function(stream) {
     //setting up recorder to record streams from both microphone and instruments
-    const audioMixer = new MultiStreamsMixer([stream, dest.stream]);
-    let mixedstream = audioMixer.getMixedStream();
-    const mediaRecorder = new MediaRecorder(mixedstream);
+	if(useMic) {
+		const audioMixer = new MultiStreamsMixer([stream, dest.stream]);
+    	let mixedstream = audioMixer.getMixedStream();
+    	visualize(mixedstream);
+	}
 
-    visualize(mixedstream);
+	const mediaRecorder = useMic ? new MediaRecorder(mixedstream) : new MediaRecorder(dest.stream);
 
     record.onclick = function() {
       mediaRecorder.start();
@@ -67,7 +68,7 @@ if (navigator.mediaDevices.getUserMedia) {
 
       const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
 
-      const clipContainer = document.createElement('article');
+      const clipContainer = document.createElement('tr');
       const clipLabel = document.createElement('p');
       const audio = document.createElement('audio');
       const deleteButton = document.createElement('button');
@@ -83,9 +84,9 @@ if (navigator.mediaDevices.getUserMedia) {
         clipLabel.textContent = clipName;
       }
 
-      clipContainer.appendChild(audio);
-      clipContainer.appendChild(clipLabel);
-      clipContainer.appendChild(deleteButton);
+      clipContainer.appendChild(document.createElement('td')).appendChild(audio);
+      clipContainer.appendChild(document.createElement('td')).appendChild(clipLabel);
+      clipContainer.appendChild(document.createElement('td')).appendChild(deleteButton);
       soundClips.appendChild(clipContainer);
 
       audio.controls = true;

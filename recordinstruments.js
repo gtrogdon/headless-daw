@@ -22,7 +22,6 @@ gain.connect(speaker);
 
 stop2.disabled = true;
 
-
 //main block for doing the audio recording
 
 if (navigator.mediaDevices.getUserMedia) {
