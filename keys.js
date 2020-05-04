@@ -77,7 +77,14 @@ const commandEvents = {
 		changeTrackUp();
 	}, "k":(e) => {
 		changeTrackDown();
-	},  "x":(e) => {
+	}, "d":(e) => { 
+		if(tracks.length) {
+			utter(`Delete track ${curTrackIndex+1}`, voiceIndex);
+			tracks = tracks.filter((track) => {
+				return track != tracks[curTrackIndex];
+			});
+		}
+	}, "x":(e) => {
 		utter("Exporting Song", voiceIndex);
 		exportSong();
 	}, "m":(e) => {
