@@ -26,6 +26,7 @@ action. It would be a problem if these were accessed in command mode.
 | Key		    | Usage		    		  				  	  |
 | ------------- | ------------- 		  				  	  |
 | `;`		    | Change to *Command Mode*  				  |
+| `f`		    | Refocus to keyboard in case focus is lost   |
 | `Shift (hold)`| Sustain the note  		  				  |
 | `Up Arrow`	| Cycle up an octave  		  				  |
 | `Down Arrow`	| Cycle down an octave  		  			  |
