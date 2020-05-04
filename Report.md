@@ -30,3 +30,19 @@ The Headless DAW is intended for young, visually-impaired users who don't have a
 -Please be sure to allow Firefox access to the microphone. A pop-up should appear when the page first loads.<br/>
 
 <h2>Problems Encountered/Future Work</h2>
+The creation of a simple browser-based DAW for the visually impaired wasn't easy. It was difficult to find an existing workstation that we could go off of, as there are a limited number of instantly accessible browser-based DAWs and most of them were too complex for our intended audience. We had to get creative by using the MediaStream Recorder API along with the WebAudio-Tinysynth synthesizer in order to create a more stripped down and simplified way of recording instruments that wasn't too reliant on input from the mouse and visual controls.<br/>
+<br/>
+It was challenging to make a DAW completely controllable by a qwerty keyboard and absent of any sliders, knobs, or timelines you'd see in a traditional workstation. The lack of keyboard shortcut space for the application required us to implement the "modal" editing system, allowing the use of one key for multiple tasks when the mode is switched. This way, the user can take full advantage of the different instrument notes while also editing a track all from the keyboard.<br/>
+<br/>
+Another problem we faced was browser compatibility. Specifically with the MultiStreamsMixer library and MediaStream Recording API, we had trouble getting microphone and instrument recording to be fully functional on both Firefox and Chrome.
+<br/>
+<br/>
+There are many future improvements that can be made to the Headless DAW:<br/>
+-Microphone recordings can be improved by allowing the user to edit them separately from recorded instruments.<br/>
+-The keyboard variations can be refined to a more concise but still diverse selection that is less tedious to navigate.<br/>
+-More keyboard shortcuts can be added to Command Mode to make manipulating recorded tracks even easier.<br/>
+-The ability to edit tracks post-recording (adjust volume, add layers or a cutting tool) would improve the DAW's capabilities.<br/>
+-Provide preset recordings that the user can build off of to further accomodate our intended audience.<br/>
+
+
+
