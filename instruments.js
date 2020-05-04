@@ -134,6 +134,9 @@ window.onload=()=>{
 	//Assign keybindings for program
 	BindKeys();
 
+	//Give focus to keyboard
+	document.querySelector("#kb").focus();
+
 	utter("Welcome to the Digital Audio Workstation", voiceIndex);
 }
 

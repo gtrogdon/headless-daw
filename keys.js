@@ -79,20 +79,18 @@ const commandEvents = {
 		changeTrackDown();
 	}, "d":(e) => { 
 		if(tracks.length) {
-			utter(`Delete track ${curTrackIndex+1}`, voiceIndex);
-			tracks = tracks.filter((track) => {
-				return track != tracks[curTrackIndex];
-			});
+			document.querySelector("#track_list").removeChild(document.querySelector("#track_list").children[curTrackIndex])
+			delTrack(curTrackIndex);
 		}
 	}, "x":(e) => {
 		utter("Exporting Song", voiceIndex);
 		exportSong();
 	}, "m":(e) => {
 		if(useMic) {
-			utter("Mic Recording Off");
+			utter("Mic Recording Off", voiceIndex);
 			useMic = false;
 		} else {
-			utter("Mic Recording On");
+			utter("Mic Recording On", voiceIndex);
 			useMic = true;
 		}
 	}
@@ -107,6 +105,9 @@ BindKeys = () => {
 		} else {
 			if(e.key in commandEvents) commandEvents[e.key](e);
 		}
+
+		if(e.key == "f") 
+			document.querySelector("#kb").focus();
 	});
 	document.addEventListener("keyup", (e) => {
 		if(e.keyCode==16){

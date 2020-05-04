@@ -98,6 +98,14 @@ if (navigator.mediaDevices.getUserMedia) {
 
       deleteButton.onclick = function(e) {
         let evtTgt = e.target;
+		let trackIndex = curTrackIndex;
+		for (let i=0; i < evtTgt.parentNode.parentNode.parentNode.children.length; i++) {
+			if(evtTgt.parentNode.parentNode.parentNode.children[i] == evtTgt.parentNode.parentNode) {
+				let trackIndex = i;
+				break;
+			}
+		}
+		delTrack(trackIndex);
         evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
       }
 
